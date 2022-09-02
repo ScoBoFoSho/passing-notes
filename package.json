@@ -20,6 +20,7 @@
   "homepage": "https://github.com/ScoBoFoSho/passing-notes#readme",
   "dependencies": {
     "cuid": "^2.1.8",
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "nodemon": "^2.0.19"
   }
 }
