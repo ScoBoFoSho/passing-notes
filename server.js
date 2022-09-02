@@ -4,6 +4,8 @@ const path = require('path');
 const PORT = process.env.PORT || 3003;
 const { notes } = require('./develop/db/db.json');
 const app = express();
+const cuid = require('cuid');
+
 
 app.use(express.static('develop/public'));
 // parse incoming string or array data
@@ -48,23 +50,42 @@ app.get("*", (req, res) => {
 });
 
 app.post('/api/notes', (req, res) => {
-    notesData = fs.readFileSync('./develop/db/db.json', 'utf-8');
-    console.log(notesData);
 
-    // parse data of an array of objects
-    notesData = JSON.parse(notesData);
-    // set the notes' id
-    req.body.id = notesData.length;
-    // add new note to the array
-    notesData.push(req.body);
-    notesData = JSON.stringify(notesData);
-    // write new note to file
-    fs.writeFileSync('./develop/db/db.json', notesData, 'utf-8', (err) => {
-        if (err) throw err
+    console.log(notesData);
+    req.body.id = cuid();
+
+    const { title, text, id } = req.body;
+
+    const noteObj = {
+        title,
+        text,
+        id
+    }
+
+    notesData = fs.readFile('./develop/db/db.json', 'utf-8', (err, fileData) => {
+        const { notes } = JSON.parse(fileData);
+        notes.push(noteObj);
+        const stringifiedNotesArray = JSON.stringify(notes);
+        fs.writeFile('./develop/db/db.json', stringifiedNotesArray, (err) => {
+            if (err) throw err;
+            res.json(notes);
+        })
     });
-    // change it back to an array and send back to the browser
+
+    // // parse data of an array of objects
+    // notesData = JSON.parse(notesData);
+    // // set the notes' id
+    // req.body.id = notesData.length;
+    // // add new note to the array
+    // notesData.push(req.body);
+    // notesData = JSON.stringify(notesData);
+    // // write new note to file
+    // fs.writeFileSync('./develop/db/db.json', notesData, 'utf-8', (err) => {
+    //     if (err) throw err
+    // });
+    // // change it back to an array and send back to the browser
     // res.json(JSON.parses(notesData));
-  });
+});
 
 app.delete("/api/notes/:id", (req, res) => {
     notesData = fs.readFileSync('./develop/db/db.json', 'utf-8');
