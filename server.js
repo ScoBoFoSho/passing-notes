@@ -22,7 +22,7 @@ app.get("/api/notes", (req, res) => {
 
 
 
-// THIS APP.GET BELOW MUST BE THE LAST ROUTE EXPRESSED!!!!!
+// THIS APP.GET BELOW MUST BE THE LAST ROUTE EXPRESSED!!!!!!
 app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, './Develop/public/index.html'));
 });
