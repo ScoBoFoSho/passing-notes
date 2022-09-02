@@ -2,10 +2,10 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const PORT = process.env.PORT || 3003;
-const { notes } = require('./Develop/db/db.json');
+const { notes } = require('./develop/db/db.json');
 const app = express();
 
-app.use(express.static('Develop/public'));
+app.use(express.static('develop/public'));
 
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, './develop/public/notes.html'));
@@ -17,14 +17,14 @@ app.get('/', (req, res) => {
 
 
 app.get("/api/notes", (req, res) => {
-    res.sendFile(path.join(__dirname, './Develop/db/db.json'))
+    res.sendFile(path.join(__dirname, './develop/db/db.json'))
 })
 
 
 
 // THIS APP.GET BELOW MUST BE THE LAST ROUTE EXPRESSED!!!!!!
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, './Develop/public/index.html'));
+    res.sendFile(path.join(__dirname, './develop/public/index.html'));
 });
 
 app.post('/api/notes', (req, res) => {
