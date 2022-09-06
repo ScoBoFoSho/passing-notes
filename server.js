@@ -10,7 +10,7 @@ const allNotes = require('./db/db.json');
 
 const app = express();
 
-app.use(express.static('/public'));
+app.use(express.static('public'));
 // parse incoming string or array data
 app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data
@@ -23,7 +23,7 @@ let notesData = [];
 //     return body;
 // }
 
-app.use('/', htmlRoutes)
+// app.use('/', htmlRoutes)
 
 // THESE ARE MY ROUTES
 // HTML ROUTES
