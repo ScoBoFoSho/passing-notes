@@ -3,7 +3,11 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 
-const allNotes= require('./develop/db/db.json');
+// const htmlRoutes = require('./develop/routes/htmlRoutes');
+// const apiRoutes = require('./develop/routes/apiRoutes');
+
+const allNotes = require(path.join(__dirname, './develop/db/db.json');
+
 const app = express();
 
 app.use(express.static('develop/public'));
@@ -19,16 +23,19 @@ let notesData = [];
 //     return body;
 // }
 
-// THESE ARE MY ROUTES
-app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, './develop/public/notes.html'));
-});
+app.use('/', htmlRoutes)
 
+// THESE ARE MY ROUTES
+// HTML ROUTES
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, './develop/public/index.html'));
 });
 
+app.get('/notes', (req, res) => {
+    res.sendFile(path.join(__dirname, './develop/public/notes.html'));
+});
 
+// API ROUTES
 app.get("/api/notes", (req, res) => {
     // res.sendFile(path.join(__dirname, './develop/db/db.json'))
     try {
@@ -39,13 +46,6 @@ app.get("/api/notes", (req, res) => {
         console.log("ERROR");
     }
     res.json(notesData);
-});
-
-
-
-// THIS APP.GET BELOW MUST BE THE LAST ROUTE EXPRESSED!!!!!!
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, './develop/public/index.html'));
 });
 
 app.post('/api/notes', (req, res) => {
@@ -86,6 +86,11 @@ app.delete("/api/notes/:id", (req, res) => {
     // res.send(JSON.parse(notesData));
 
 })
+
+// THIS APP.GET BELOW MUST BE THE LAST ROUTE EXPRESSED!!!!!!
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, './develop/public/index.html'));
+});
 
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`)
