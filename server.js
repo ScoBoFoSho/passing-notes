@@ -6,7 +6,7 @@ const path = require('path');
 // const htmlRoutes = require('./develop/routes/htmlRoutes');
 // const apiRoutes = require('./develop/routes/apiRoutes');
 
-const allNotes = require(path.join(__dirname, './develop/db/db.json');
+const allNotes = require(path.join(__dirname, './develop/db/db.json'));
 
 const app = express();
 
