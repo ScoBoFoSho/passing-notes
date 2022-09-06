@@ -3,14 +3,14 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 
-// const htmlRoutes = require('./develop/routes/htmlRoutes');
-// const apiRoutes = require('./develop/routes/apiRoutes');
+// const htmlRoutes = require('./routes/htmlRoutes');
+// const apiRoutes = require('./routes/apiRoutes');
 
-const allNotes = require(path.join(__dirname, './develop/db/db.json'));
+const allNotes = require('./db/db.json');
 
 const app = express();
 
-app.use(express.static('develop/public'));
+app.use(express.static('/public'));
 // parse incoming string or array data
 app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data
@@ -28,18 +28,18 @@ app.use('/', htmlRoutes)
 // THESE ARE MY ROUTES
 // HTML ROUTES
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, './develop/public/index.html'));
+    res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
 app.get('/notes', (req, res) => {
-    res.sendFile(path.join(__dirname, './develop/public/notes.html'));
+    res.sendFile(path.join(__dirname, './public/notes.html'));
 });
 
 // API ROUTES
 app.get("/api/notes", (req, res) => {
-    // res.sendFile(path.join(__dirname, './develop/db/db.json'))
+    // res.sendFile(path.join(__dirname, './db/db.json'))
     try {
-    notesData = fs.readFileSync("develop/db/db.json", "utf-8");
+    notesData = fs.readFileSync("db/db.json", "utf-8");
     console.log("hello!");
     notesData = JSON.parse(notesData);
     } catch (error) {
@@ -49,7 +49,7 @@ app.get("/api/notes", (req, res) => {
 });
 
 app.post('/api/notes', (req, res) => {
-    notesData = fs.readFileSync('./develop/db/db.json', 'utf-8');
+    notesData = fs.readFileSync('./db/db.json', 'utf-8');
     console.log(notesData);
 
     // parse data of an array of objects
@@ -60,7 +60,7 @@ app.post('/api/notes', (req, res) => {
     notesData.push(req.body);
     notesData = JSON.stringify(notesData);
     // write new note to file
-    fs.writeFileSync('./develop/db/db.json', notesData, 'utf-8', (err) => {
+    fs.writeFileSync('./db/db.json', notesData, 'utf-8', (err) => {
         if (err) throw err
     });
     // change it back to an array and send back to the browser
@@ -68,7 +68,7 @@ app.post('/api/notes', (req, res) => {
   });
 
 app.delete("/api/notes/:id", (req, res) => {
-    notesData = fs.readFileSync('./develop/db/db.json', 'utf-8');
+    notesData = fs.readFileSync('./db/db.json', 'utf-8');
     // parse data to get an array of objects
     notesData = JSON.parse(notesData);
     // delete old note from the array of objects
@@ -78,7 +78,7 @@ app.delete("/api/notes/:id", (req, res) => {
     // make it a string again
     notesData = JSON.stringify(notesData);
     // write the new notes to the file again (minus the one we scratched)
-    fs.writeFileSync('./develop/db/db.json', notesData, 'utf-8', (err) => {
+    fs.writeFileSync('./db/db.json', notesData, 'utf-8', (err) => {
         if (err) throw err;
     });
 
@@ -89,7 +89,7 @@ app.delete("/api/notes/:id", (req, res) => {
 
 // THIS APP.GET BELOW MUST BE THE LAST ROUTE EXPRESSED!!!!!!
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, './develop/public/index.html'));
+    res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
 app.listen(PORT, () => {
